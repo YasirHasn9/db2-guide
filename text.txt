@@ -1,0 +1,34 @@
+what is data base ?
+simply is a collection of data code be written or digital.
+
+
+there 3 type of database out there but here we are gonna focus on the 
+rational database
+
+to deal with it we need something called sql.
+sq is rational database
+
+to write a useful data we need to have something called schema 
+what is schema?
+you can think of it is the shape of our data 
+---- our data are made of tables and columns 
+---- so to design a great schema, we have to consider 
+-- 1. what fields and columns the table need
+-- 2. what data type for each columns 
+-- 3. the restrictions and constrains for each columns
+-------------------------------------------------------
+
+
+
+Data Definition Language (DDL)
+-----------------------------
+CREATE TABLE <table name > (
+    <column> ==> <type> <constrains>,
+    <column> ==> <type> <constrains>,
+)
+
+// this command helps to change the schema of  an existed table
+ALERT TABLE <table> <stuff to change>;
+
+
+DRO TABLE ==> delete the table 
