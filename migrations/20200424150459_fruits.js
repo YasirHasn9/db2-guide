@@ -13,4 +13,8 @@ exports.up = async function(knex) {
   });
 };
 
-exports.down = async function(knex) {};
+exports.down = async function(knex) {
+  // when we create the data , the order would go from up to low
+  // so th reverse the order , knex helps us with this function
+  await knex.schema.dropTableIfExists("fruits");
+};
