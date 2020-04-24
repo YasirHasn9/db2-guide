@@ -1,63 +1,44 @@
 const express = require("express");
-const knex = require("knex");
-
-const db = knex({
-  client: "sqlite3",
-  connection: {
-    filename: "./data/produce.db3"
-  },
-  useNullAsDefault: true
-});
-
+const db = require("../data/config");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  db("fruits")
-    .then(fruits => {
-      res.json(fruits);
-    })
-    .catch(err => {
-      res.status(500).json({ message: "Failed to retrieve fruits" });
-    });
+router.get("/", async (req, res, next) => {
+  try {
+    const fruits = await db("fruits");
+    res.json(fruits);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
-
-  db("fruits")
-    .where({ id })
-    .first()
-    .then(fruit => {
-      res.json(fruit);
-    })
-    .catch(err => {
-      res.status(500).json({ message: "Failed to retrieve fruit" });
-    });
+router.get("/:id", async (req, res, next) => {
+  try {
+    let { id } = req.params;
+    const fruit = await db("fruits")
+      .where({ id: id })
+      .first();
+    res.json(fruit);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-router.post("/",  (req, res) => {
+router.post("/", async (req, res, next) => {
   const fruitData = req.body;
-  db('fruits').insert(fruitData)
-  .then(ids => {
-    db('fruits').where({ id: ids[0] })
-    .then(newFruitEntry => {
-      res.status(201).json(newFruitEntry);
+  db("fruits")
+    .insert(fruitData)
+    .then(ids => {
+      db("fruits")
+        .where({ id: ids[0] })
+        .first()
+        .then(newFruitEntry => {
+          res.status(201).json(newFruitEntry);
+        });
+    })
+    .catch(err => {
+      console.log("POST error", err);
+      res.status(500).json({ message: "Failed to store data" });
     });
-  })
-  .catch (err => {
-    console.log('POST error', err);
-    res.status(500).json({ message: "Failed to store data" });
-  });
-
-  // try {
-  //   const fruitData = req.body;
-  //   let [id] = await db("fruits").insert(fruitData);
-  //   const newFruit = await db("fruits")
-  //     .where({ id });
-  //   res.status(201).json(newFruit);
-  // } catch (err) {
-  //   next(err);
-  // }
 });
 
 module.exports = router;

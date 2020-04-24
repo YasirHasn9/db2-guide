@@ -32,3 +32,34 @@ ALERT TABLE <table> <stuff to change>;
 
 
 DRO TABLE ==> delete the table 
+
+to work with knex instead of the sqlite 
+npm install knex
+
+npx knex iniy to create a fire called knexfile
+that han an object 
+module.exports = {
+    client : "sqlite3",
+    connection: {
+        filename: "the root of the folder to get the file db.3
+    },
+    useNullAsDefault: true
+}
+
+
+then we create a file called config in the data 
+import knex and the knexfile 
+
+module.exports = knex(the path of the knexfile)
+
+
+
+---- note that it is not best practice to play with data in the 
+raw sqlite because one mistake could cost us alot 
+
+here it comes the benefits of migration
+
+so the knex has a command called knex migrate:make <TableName>
+so this will make a folder called migrations 
+that has a single file that tilted it as the data 
+like : 2022691600_tableName.js
